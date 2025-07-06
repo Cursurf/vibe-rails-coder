@@ -1,24 +1,2606 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vibe-rails-coder</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursurf - AI Coding for Ruby on Rails</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <meta property="og:title" content="vibe-rails-coder" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot.active {
+            background: #00ffff;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .nav-dot:hover {
+            background: rgba(0, 255, 255, 0.5);
+            transform: scale(1.2);
+        }
+
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00ffff;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            padding: 80px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #00ffff, #ffffff, #00ffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #00ffff;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #b0b0b0;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            color: #b0b0b0;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23333" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)" opacity="0.3"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Problem Section */
+        .problem {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 3rem;
+        }
+
+        .problem-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0080, #00ffff);
+        }
+
+        .problem-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #00ffff;
+        }
+
+        /* Solution Section */
+        .solution {
+            background: linear-gradient(135deg, #16213e 0%, #0a0a0a 100%);
+        }
+
+        .solution-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 50px;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+        }
+
+        .feature-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                right: 20px;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .problem-grid,
+            .solution-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-dot active" data-section="hero" data-label="Home"></div>
+        <div class="nav-dot" data-section="opportunity" data-label="Opportunity"></div>
+        <div class="nav-dot" data-section="problem" data-label="Problem"></div>
+        <div class="nav-dot" data-section="solution" data-label="Solution"></div>
+        <div class="nav-dot" data-section="market" data-label="Market"></div>
+        <div class="nav-dot" data-section="market1" data-label="Market1"></div>
+        <div class="nav-dot" data-section="market2" data-label="Market2"></div>
+        <div class="nav-dot" data-section="market3" data-label="Market3"></div>
+        <div class="nav-dot" data-section="market4" data-label="Market4"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+        <div class="container">
+            <h1>Cursurf</h1>
+            <p class="subtitle">Code with AI that actually understands your app</p>
+            <p>The first AI coding tool built exclusively for Ruby on Rails. Runtime-aware context and persistent understanding that makes vibe coding actually work for real codebases.</p>
+            <a href="#opportunity" class="cta-button">See the Future</a>
+        </div>
+    </section>
+
+    <!-- Opportunity Section -->
+    <section class="section opportunity" id="opportunity">
+        <div class="container">
+            <h2>The Opportunity</h2>
+            <p class="subtitle">AI coding is the future, but there's a problem...</p>
+            
+            <div class="problem-grid">
+                <div class="problem-item">
+                    <div class="problem-icon">🚀</div>
+                    <h3>Vibe Coding is Exploding</h3>
+                    <p>AI coding (vibe coding) is the most exciting frontier in software development. Cursor, Windsurf, and Claude Code are leading the wave with millions of users.</p>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">⚡</div>
+                    <h3>But They All Have a Fatal Flaw</h3>
+                    <p>Current AI tools excel at creating new code from scratch, but they can't reliably edit existing codebases. They lack the deep context needed for real development.</p>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">🎯</div>
+                    <h3>The Market is Ready</h3>
+                    <p>Developer tools market is $30B+ and growing. AI coding represents the biggest shift since Git and IDEs. First-mover advantage in specialized markets is massive.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section problem" id="problem">
+        <div class="container">
+            <h2>AI Still Doesn't Understand Codebases</h2>
+            <p class="subtitle">Current tools fail when it matters most</p>
+            
+            <div class="problem-grid">
+                <div class="problem-item">
+                    <div class="problem-icon">🔧</div>
+                    <h3>Small Updates Break Everything</h3>
+                    <p>Adding a field to a form, refactoring a method, or updating existing features becomes a nightmare. AI makes assumptions instead of understanding your actual codebase.</p>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">🔍</div>
+                    <h3>Context is Brittle & Opaque</h3>
+                    <p>RAG, Embeddings, keyword grep, and LSP aren't enough. Context extraction is unreliable, and developers can't see or fix what the AI thinks it knows about their code.</p>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">👥</div>
+                    <h3>Teams Can't Collaborate</h3>
+                    <p>One developer spends 1 hour "vibe coding" and 5 hours debugging. Another developer needs 10+ hours for the same debugging. No shared understanding.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="section solution" id="solution">
+        <div class="container">
+            <h2>The Insight: Go Narrow to Go Deep</h2>
+            <p class="subtitle">Supporting all languages = surface-level understanding</p>
+            
+            <div class="solution-features">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-number">01</div>
+                        <h3>Runtime-Aware Context</h3>
+                        <p>Lightweight gem + web UI + Redis context layer. We hook into your Rails runtime to understand exactly how your models, controllers, and views connect—no guessing.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-number">02</div>
+                        <h3>Editable & Persistent</h3>
+                        <p>Unlike brittle embeddings, our context graph is editable and persistent. Team members can review, correct, and improve what the AI knows about your codebase.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-number">03</div>
+                        <h3>Rails-Native Intelligence</h3>
+                        <p>Deep understanding of Rails conventions, patterns, and ecosystem. We know ActiveRecord, Rails routing, MVC patterns—not just Ruby syntax. Think: AI pair programmer who actually knows your app.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section class="section market" id="market">
+        <div class="container">
+            <h2>Why Start with Rails?</h2>
+            <p class="subtitle">The most successful startups are built on Rails</p>
+            
+            <div class="solution-features">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-number">💎</div>
+                        <h3>YC's Favorite Stack</h3>
+                        <p>Airbnb ($75B), Stripe ($95B), Coinbase ($8B), Instacart ($24B), Chime ($25B)—all built on Rails. Most popular framework for YC startups building fast-moving products.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-number">🎯</div>
+                        <h3>Perfect Early Adopters</h3>
+                        <p>100,000+ active Rails engineers globally. Rails devs are convention-heavy, tool-hungry, and early adopters. They understand the value of developer productivity tools.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-number">🚀</div>
+                        <h3>Expansion Strategy</h3>
+                        <p>Rails is just the beginning. Once we perfect the approach, we'll expand to Django, Laravel, Node.js. Focus beats breadth—nail one ecosystem first.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Product Demo Section -->
+<section class="section demo" id="demo">
+    <div class="container">
+        <h2>What AI Coding Tools Can't Answer</h2>
+        <p class="subtitle">Simple questions that break current AI tools</p>
+        
+        <div class="demo-container">
+            <!-- Problem Questions -->
+            <div class="problem-questions">
+                <div class="question-grid">
+                    <div class="question-card">
+                        <div class="question-icon">🔐</div>
+                        <div class="question-text">"How does authentication work in this project?"</div>
+                        <div class="ai-response failing">
+                            <strong>Cursor/Windsurf:</strong> "I can see some auth-related files, but I'm not sure how they connect..."
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-icon">📅</div>
+                        <div class="question-text">"Where is the group of code files that manages Events?"</div>
+                        <div class="ai-response failing">
+                            <strong>Cursor/Windsurf:</strong> "Found some Event models, but missing controllers, jobs, and views..."
+                        </div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-icon">🔗</div>
+                        <div class="question-text">"What files does UserController#create depend on?"</div>
+                        <div class="ai-response failing">
+                            <strong>Cursor/Windsurf:</strong> "Maybe User model? I'm guessing based on naming..."
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cursurf Solution -->
+            <div class="cursurf-solution">
+                <h3>🧠 Cursurf's Intelligent Feature Mapping</h3>
+                
+                <div class="solution-demo">
+                    <div class="demo-left">
+                        <h4>1. Feature-Based Code Organization</h4>
+                        <div class="feature-map">
+                            <div class="feature-group">
+                                <div class="feature-header">
+                                    <span class="feature-icon">🔐</span>
+                                    <span class="feature-name">Authentication System</span>
+                                </div>
+                                <div class="feature-files">
+                                    <div class="file-item">app/controllers/sessions_controller.rb</div>
+                                    <div class="file-item">app/models/user.rb</div>
+                                    <div class="file-item">app/views/sessions/</div>
+                                    <div class="file-item">config/routes.rb (auth routes)</div>
+                                    <div class="file-item">app/helpers/auth_helper.rb</div>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-group">
+                                <div class="feature-header">
+                                    <span class="feature-icon">📅</span>
+                                    <span class="feature-name">Event Management</span>
+                                </div>
+                                <div class="feature-files">
+                                    <div class="file-item">app/controllers/events_controller.rb</div>
+                                    <div class="file-item">app/models/event.rb</div>
+                                    <div class="file-item">app/jobs/event_reminder_job.rb</div>
+                                    <div class="file-item">app/views/events/</div>
+                                    <div class="file-item">app/mailers/event_mailer.rb</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-right">
+                        <h4>2. Precise Dependency Mapping</h4>
+                        <div class="dependency-viewer">
+                            <div class="dependency-focus">
+                                <div class="focus-file">📄 UserController#create</div>
+                            </div>
+                            <div class="dependency-arrow">⬇️</div>
+                            <div class="dependency-tree">
+                                <div class="dep-category">
+                                    <div class="dep-label">Models</div>
+                                    <div class="dep-files">
+                                        <div class="dep-file">User.rb</div>
+                                        <div class="dep-file">Profile.rb</div>
+                                    </div>
+                                </div>
+                                <div class="dep-category">
+                                    <div class="dep-label">Jobs</div>
+                                    <div class="dep-files">
+                                        <div class="dep-file">WelcomeEmailJob.rb</div>
+                                        <div class="dep-file">UserAnalyticsJob.rb</div>
+                                    </div>
+                                </div>
+                                <div class="dep-category">
+                                    <div class="dep-label">Services</div>
+                                    <div class="dep-files">
+                                        <div class="dep-file">UserRegistrationService.rb</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Collaboration -->
+            <div class="team-collaboration">
+                <h3>👥 Team-Managed Context</h3>
+                <div class="collaboration-flow">
+                    <div class="collab-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h5>Developer Reviews Context</h5>
+                            <div class="context-card">
+                                <div class="context-item">
+                                    <span class="context-file">UserController#create</span>
+                                    <span class="context-note">✏️ Edit context</span>
+                                </div>
+                                <div class="context-edit">
+                                    <input type="text" placeholder="Add context: This method also triggers Slack notifications..." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="collab-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h5>Context Shared Across Team</h5>
+                            <div class="team-members">
+                                <div class="member">👤 Sarah (added auth context)</div>
+                                <div class="member">👤 Mike (updated event dependencies)</div>
+                                <div class="member">👤 Alex (documented API integrations)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="collab-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h5>AI Gets Perfect Context</h5>
+                            <div class="ai-context">
+                                <div class="context-quality">
+                                    <span class="quality-label">Context Quality:</span>
+                                    <div class="quality-bar">
+                                        <div class="quality-fill" style="width: 95%"></div>
+                                    </div>
+                                    <span class="quality-score">95% accurate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- How Cursurf Works Section -->
+<section class="section architecture" id="architecture">
+    <div class="container">
+        <h2>How Cursurf Works</h2>
+        <p class="subtitle">Runtime-aware architecture that actually understands your Rails app</p>
+        
+        <!-- Technical Architecture Flow -->
+        <div class="architecture-flow">
+            <div class="arch-title">
+                <h3>🏗️ Technical Architecture</h3>
+                <p>Lightweight integration with deep Rails understanding</p>
+            </div>
+            
+            <div class="arch-components">
+                <div class="arch-component">
+                    <div class="component-icon">💎</div>
+                    <div class="component-name">Cursurf Gem</div>
+                    <div class="component-desc">Lightweight Rails gem that hooks into your app's runtime</div>
+                </div>
+                
+                <div class="arch-arrow">→</div>
+                
+                <div class="arch-component">
+                    <div class="component-icon">🔗</div>
+                    <div class="component-name">Runtime Hooks</div>
+                    <div class="component-desc">Captures real model relationships, controller actions, and view dependencies</div>
+                </div>
+                
+                <div class="arch-arrow">→</div>
+                
+                <div class="arch-component">
+                    <div class="component-icon">🗄️</div>
+                    <div class="component-name">Redis Context</div>
+                    <div class="component-desc">Persistent, editable dependency graph and feature mapping</div>
+                </div>
+                
+                <div class="arch-arrow">→</div>
+                
+                <div class="arch-component">
+                    <div class="component-icon">🧠</div>
+                    <div class="component-name">AI Engine</div>
+                    <div class="component-desc">LLM with precise Rails context for accurate code generation</div>
+                </div>
+                
+                <div class="arch-arrow">→</div>
+                
+                <div class="arch-component">
+                    <div class="component-icon">🌐</div>
+                    <div class="component-name">Web UI</div>
+                    <div class="component-desc">Integrated interface for coding, context editing, and team collaboration</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example Workflow -->
+        <div class="workflow-example">
+            <h3>🔄 Example Workflow: "Add Avatar to User Profile"</h3>
+            
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>You Ask Cursurf</h4>
+                        <div class="step-detail">"Add user avatar upload to profile page"</div>
+                    </div>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Runtime Context Discovery</h4>
+                        <div class="step-detail">
+                            <div class="context-discovery">
+                                <div class="discovery-item">
+                                    <span class="discovery-label">Model:</span>
+                                    <span class="discovery-value">User has_one :profile</span>
+                                </div>
+                                <div class="discovery-item">
+                                    <span class="discovery-label">Controller:</span>
+                                    <span class="discovery-value">ProfilesController#edit, #update</span>
+                                </div>
+                                <div class="discovery-item">
+                                    <span class="discovery-label">View:</span>
+                                    <span class="discovery-value">profiles/edit.html.erb</span>
+                                </div>
+                                <div class="discovery-item">
+                                    <span class="discovery-label">Routes:</span>
+                                    <span class="discovery-value">PATCH /profile</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>AI Generates Complete Solution</h4>
+                        <div class="step-detail">
+                            <div class="generated-code">
+                                <div class="code-file">
+                                    <div class="file-header">📄 app/models/user.rb</div>
+                                    <div class="file-content">has_one_attached :avatar</div>
+                                </div>
+                                <div class="code-file">
+                                    <div class="file-header">📄 app/controllers/profiles_controller.rb</div>
+                                    <div class="file-content">permit(:avatar) in strong params</div>
+                                </div>
+                                <div class="code-file">
+                                    <div class="file-header">📄 app/views/profiles/edit.html.erb</div>
+                                    <div class="file-content">file_field :avatar with preview</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Context Updated & Shared</h4>
+                        <div class="step-detail">
+                            <div class="context-update">
+                                <div class="update-item">✅ User model relationships updated</div>
+                                <div class="update-item">✅ ProfilesController dependencies mapped</div>
+                                <div class="update-item">✅ Team members can see new context</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Differentiators -->
+        <div class="differentiators">
+            <h3>🎯 Key Differentiators</h3>
+            
+            <div class="differentiator-grid">
+                <div class="differentiator-card">
+                    <div class="diff-icon">⚡</div>
+                    <div class="diff-title">Runtime-Aware Context</div>
+                    <div class="diff-desc">Unlike static analysis or embeddings, we hook into your running Rails app to understand actual relationships and dependencies</div>
+                </div>
+                
+                <div class="differentiator-card">
+                    <div class="diff-icon">✏️</div>
+                    <div class="diff-title">Editable Context Graph</div>
+                    <div class="diff-desc">Team members can review, correct, and enhance what AI knows about your codebase. No more black-box context extraction</div>
+                </div>
+                
+                <div class="differentiator-card">
+                    <div class="diff-icon">👥</div>
+                    <div class="diff-title">Team Collaboration</div>
+                    <div class="diff-desc">Shared context understanding across your team. One developer's context improvements benefit everyone</div>
+                </div>
+                
+                <div class="differentiator-card">
+                    <div class="diff-icon">🎨</div>
+                    <div class="diff-title">Rails-Native Intelligence</div>
+                    <div class="diff-desc">Deep understanding of Rails conventions, patterns, and ecosystem. Not just Ruby syntax, but Rails philosophy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Architecture Section Styles */
+.architecture {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    position: relative;
+}
+
+.architecture::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.architecture-flow {
+    margin-bottom: 60px;
+}
+
+.arch-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.arch-title h3 {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 1rem;
+}
+
+.arch-title p {
+    font-size: 1.3rem;
+    color: #b0b0b0;
+}
+
+.arch-components {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 20px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.arch-component {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 30px 20px;
+    border-radius: 15px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    grid-column: span 1;
+}
+
+.arch-component:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+    border-color: #00ffff;
+}
+
+.component-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.component-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.component-desc {
+    font-size: 0.9rem;
+    color: #b0b0b0;
+    line-height: 1.4;
+}
+
+.arch-arrow {
+    font-size: 2rem;
+    color: #00ffff;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    grid-column: span 1;
+}
+
+/* Workflow Example */
+.workflow-example {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 50px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 128, 0, 0.3);
+    margin-bottom: 60px;
+}
+
+.workflow-example h3 {
+    font-size: 2.2rem;
+    color: #ff8000;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.workflow-steps {
+    display: grid;
+    gap: 40px;
+}
+
+.workflow-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #ff8000, #ffaa00);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.step-content h4 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.step-detail {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 128, 0, 0.2);
+}
+
+.context-discovery {
+    display: grid;
+    gap: 12px;
+}
+
+.discovery-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.discovery-label {
+    font-weight: 600;
+    color: #ff8000;
+    min-width: 80px;
+}
+
+.discovery-value {
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.generated-code {
+    display: grid;
+    gap: 20px;
+}
+
+.code-file {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.file-header {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 12px 20px;
+    color: #00ffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.file-content {
+    padding: 15px 20px;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.context-update {
+    display: grid;
+    gap: 10px;
+}
+
+.update-item {
+    color: #00ff88;
+    font-weight: 500;
+}
+
+/* Key Differentiators */
+.differentiators {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 50px;
+    border-radius: 25px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.differentiators h3 {
+    font-size: 2.2rem;
+    color: #00ffff;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.differentiator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.differentiator-card {
+    background: rgba(0, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.differentiator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+    border-color: #00ffff;
+}
+
+.diff-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.diff-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.diff-desc {
+    font-size: 1rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .arch-components {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .arch-component:nth-child(2),
+    .arch-component:nth-child(4),
+    .arch-component:nth-child(6),
+    .arch-component:nth-child(8) {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .arch-components {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .arch-component {
+        grid-column: span 1;
+    }
+    
+    .arch-arrow {
+        transform: rotate(90deg);
+        grid-column: span 1;
+    }
+    
+    .workflow-step {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
+    }
+    
+    .differentiator-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+
+
+
+<!-- Why Rails Section -->
+<section class="section why-rails" id="why-rails">
+    <div class="container">
+        <h2>Why Start with Rails?</h2>
+        <p class="subtitle">The most successful startups are built on Rails</p>
+        
+        <div class="rails-stats">
+            <div class="stat-card">
+                <div class="stat-number">$250B+</div>
+                <div class="stat-label">Combined valuation of Rails unicorns</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100K+</div>
+                <div class="stat-label">Active Rails developers globally</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">60%</div>
+                <div class="stat-label">Of YC unicorns use Rails</div>
+            </div>
+        </div>
+
+        <div class="unicorn-showcase">
+            <h3>Rails Powers the Most Valuable Startups</h3>
+            <div class="unicorn-grid">
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🏠</div>
+                    <div class="unicorn-name">Airbnb</div>
+                    <div class="unicorn-value">$75B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">💳</div>
+                    <div class="unicorn-name">Stripe</div>
+                    <div class="unicorn-value">$95B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">₿</div>
+                    <div class="unicorn-name">Coinbase</div>
+                    <div class="unicorn-value">$8B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🛒</div>
+                    <div class="unicorn-name">Instacart</div>
+                    <div class="unicorn-value">$24B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🏦</div>
+                    <div class="unicorn-name">Chime</div>
+                    <div class="unicorn-value">$25B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🎵</div>
+                    <div class="unicorn-name">Spotify</div>
+                    <div class="unicorn-value">$25B valuation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rails-advantages">
+            <div class="advantage-card">
+                <div class="advantage-icon">🎯</div>
+                <h4>Perfect Target Market</h4>
+                <p>Rails developers are early adopters who understand the value of productivity tools. They're willing to pay for solutions that save time and reduce complexity.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">🏗️</div>
+                <h4>Convention Over Configuration</h4>
+                <p>Rails' strong conventions make it perfect for AI understanding. Predictable patterns, established best practices, and consistent architecture enable deeper AI comprehension.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">🚀</div>
+                <h4>Strategic Expansion Path</h4>
+                <p>Master Rails first, then expand to Django, Laravel, and Node.js. Focus beats breadth—nail one ecosystem before moving to the next.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+  /* Why Rails Section */
+.why-rails {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.rails-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin: 3rem 0;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #00ffff;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #b0b0b0;
+}
+
+.unicorn-showcase {
+    margin: 4rem 0;
+}
+
+.unicorn-showcase h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.unicorn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+}
+
+.unicorn-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.unicorn-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffff, #ffffff);
+}
+
+.unicorn-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+}
+
+.unicorn-logo {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.unicorn-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.unicorn-value {
+    font-size: 1rem;
+    color: #00ffff;
+    font-weight: 500;
+}
+
+.rails-advantages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 4rem;
+}
+
+.advantage-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.15);
+}
+
+.advantage-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.advantage-card h4 {
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.advantage-card p {
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+</style>>
+
+
+
+<!-- Competition Section -->
+<section class="section competition" id="competition">
+    <div class="container">
+        <h2>The Competition Landscape</h2>
+        <p class="subtitle">Specialized beats generalized - every time</p>
+        
+        <div class="competition-overview">
+            <div class="market-leaders">
+                <h3>Current Market Leaders</h3>
+                <div class="leader-cards">
+                    <div class="leader-card">
+                        <div class="leader-logo">⚡</div>
+                        <div class="leader-name">Cursor</div>
+                        <div class="leader-value">$9.9 billion valuation</div>
+                        <div class="leader-users">1M+ users</div>
+                    </div>
+                    <div class="leader-card">
+                        <div class="leader-logo">🌊</div>
+                        <div class="leader-name">Windsurf</div>
+                        <div class="leader-value">$3B valuation</div>
+                        <div class="leader-users">500K+ users</div>
+                    </div>
+                    <div class="leader-card">
+                      <div class="leader-logo">💜</div>
+                      <div class="leader-name">Lovable</div>
+                      <div class="leader-value">$2B valuation</div>
+                      <div class="leader-users">500K+ users</div>
+                  </div>
+                  <div class="leader-card">
+                      <div class="leader-logo">Cursurf</div>
+                      <div class="leader-name">Lovable for backend</div>
+                      <div class="leader-value">$???B valuation</div>
+                      <div class="leader-users">??? users</div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-table">
+            <h3>Feature Comparison: Cursurf vs. The Competition</h3>
+            <div class="table-container">
+                <table class="feature-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-header">Feature</th>
+                            <th class="competitor-header">Cursor</th>
+                            <th class="competitor-header">Windsurf</th>
+                            <th class="competitor-header">Claude Code</th>
+                            <th class="cursurf-header">Cursurf</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">Language Support</td>
+                            <td class="competitor-cell">All languages</td>
+                            <td class="competitor-cell">All languages</td>
+                            <td class="competitor-cell">All languages</td>
+                            <td class="cursurf-cell">Rails-native</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Code Awareness</td>
+                            <td class="competitor-cell">Static analysis</td>
+                            <td class="competitor-cell">LSP + heuristics</td>
+                            <td class="competitor-cell">File-based</td>
+                            <td class="cursurf-cell">Runtime-aware</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Context Quality</td>
+                            <td class="competitor-cell">inaccurate inexplicit</td>
+                            <td class="competitor-cell">inaccurate inexplicit</td>
+                            <td class="competitor-cell">inaccurate inexplicit</td>
+                            <td class="cursurf-cell">accurate and team mantained</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Editable Context</td>
+                            <td class="competitor-cell">❌</td>
+                            <td class="competitor-cell">❌</td>
+                            <td class="competitor-cell">❌</td>
+                            <td class="cursurf-cell">✅</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Team Collaboration</td>
+                            <td class="competitor-cell">Basic</td>
+                            <td class="competitor-cell">Basic</td>
+                            <td class="competitor-cell">None</td>
+                            <td class="cursurf-cell">Advanced</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Framework Understanding</td>
+                            <td class="competitor-cell">Surface-level</td>
+                            <td class="competitor-cell">Surface-level</td>
+                            <td class="competitor-cell">Surface-level</td>
+                            <td class="cursurf-cell">Deep Rails knowledge</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Existing Codebase Edits</td>
+                            <td class="competitor-cell">Unreliable</td>
+                            <td class="competitor-cell">Unreliable</td>
+                            <td class="competitor-cell">Unreliable</td>
+                            <td class="cursurf-cell">Reliable</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="competitive-advantages">
+            <h3>Why Specialization Wins</h3>
+            <div class="advantage-grid">
+                <div class="advantage-item">
+                    <div class="advantage-number">1</div>
+                    <div class="advantage-content">
+                        <h4>Depth Over Breadth</h4>
+                        <p>While competitors try to support every language poorly, we master one ecosystem completely. Rails conventions, patterns, and best practices are deeply understood.</p>
+                    </div>
+                </div>
+                
+                <div class="advantage-item">
+                    <div class="advantage-number">2</div>
+                    <div class="advantage-content">
+                        <h4>Perfect Product-Market Fit</h4>
+                        <p>Rails developers are productivity-obsessed early adopters. They understand the value of specialized tools and are willing to pay premium prices for them. In pre AI world, Rubymine was a good example.</p>
+                    </div>
+                </div>
+                
+                <div class="advantage-item">
+                    <div class="advantage-number">3</div>
+                    <div class="advantage-content">
+                        <h4>Network Effects</h4>
+                        <p>Rails community is tight-knit and influential. Success with Rails developers creates viral growth and word-of-mouth marketing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="market-positioning">
+            <h3>Market Positioning</h3>
+            <div class="positioning-chart">
+                <div class="chart-container">
+                    <div class="chart-axis">
+                        <div class="y-axis">
+                            <span class="axis-label">Context Quality</span>
+                            <div class="axis-line"></div>
+                        </div>
+                        <div class="x-axis">
+                            <span class="axis-label">Specialization</span>
+                            <div class="axis-line"></div>
+                        </div>
+                    </div>
+                    <div class="chart-points">
+                        <div class="point competitor-point cursor" data-tooltip="Cursor: Broad but shallow">
+                            <span class="point-label">Cursor</span>
+                        </div>
+                        <div class="point competitor-point windsurf" data-tooltip="Windsurf: Broad but shallow">
+                            <span class="point-label">Windsurf</span>
+                        </div>
+                        <div class="point competitor-point claude-code" data-tooltip="Claude Code: Broad but shallow">
+                            <span class="point-label">Claude Code</span>
+                        </div>
+                        <div class="point cursurf-point" data-tooltip="Cursurf: Specialized and deep">
+                            <span class="point-label">Cursurf</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+  /* Competition Section */
+.competition {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.competition-overview {
+    margin: 3rem 0;
+}
+
+.market-leaders h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.leader-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 4rem;
+}
+
+.leader-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.leader-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+.leader-logo {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.leader-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.leader-value {
+    font-size: 1rem;
+    color: #00ffff;
+    margin-bottom: 5px;
+}
+
+.leader-users {
+    font-size: 0.9rem;
+    color: #b0b0b0;
+}
+
+/* Comparison Table */
+.comparison-table {
+    margin: 4rem 0;
+}
+
+.comparison-table h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.feature-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.feature-table th,
+.feature-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-header {
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
+    font-weight: 600;
+}
+
+.competitor-header {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.cursurf-header {
+    background: rgba(0, 255, 255, 0.2);
+    color: #00ffff;
+    font-weight: 700;
+}
+
+.feature-name {
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.competitor-cell {
+    color: #b0b0b0;
+}
+
+.cursurf-cell {
+    color: #00ffff;
+    font-weight: 600;
+}
+
+/* Competitive Advantages */
+.competitive-advantages {
+    margin: 4rem 0;
+}
+
+.competitive-advantages h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.advantage-grid {
+    display: grid;
+    gap: 30px;
+}
+
+.advantage-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.advantage-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.1);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.advantage-content h4 {
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.advantage-content p {
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+/* Market Positioning Chart */
+.market-positioning {
+    margin: 4rem 0;
+}
+
+.market-positioning h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.positioning-chart {
+    height: 400px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+}
+
+.chart-axis {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.y-axis {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    bottom: 50px;
+    writing-mode: vertical-lr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.x-axis {
+    position: absolute;
+    bottom: 20px;
+    left: 50px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.axis-label {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.axis-line {
+    background: rgba(255, 255, 255, 0.2);
+    position: absolute;
+}
+
+.y-axis .axis-line {
+    width: 2px;
+    height: 100%;
+    right: 0;
+    top: 0;
+}
+
+.x-axis .axis-line {
+    height: 2px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.chart-points {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+}
+
+.point {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.point-label {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.competitor-point {
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid #ffffff;
+}
+
+.competitor-point .point-label {
+    color: #ffffff;
+}
+
+.cursor {
+    bottom: 40%;
+    left: 25%;
+}
+
+.windsurf {
+    bottom: 35%;
+    left: 30%;
+}
+
+.claude-code {
+    bottom: 50%;
+    left: 20%;
+}
+
+.cursurf-point {
+    background: #00ffff;
+    border: 2px solid #00ffff;
+    bottom: 80%;
+    right: 20%;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.cursurf-point .point-label {
+    color: #00ffff;
+    font-weight: 600;
+}
+
+.point:hover {
+    transform: scale(1.5);
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        font-size: 0.9rem;
+    }
+    
+    .feature-table th,
+    .feature-table td {
+        padding: 10px;
+    }
+    
+    .advantage-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .positioning-chart {
+        height: 300px;
+    }
+}
+</style>
+
+<!-- Business Model Section -->
+<section class="section business-model" id="business-model">
+    <div class="container">
+        <h2>Two Paths to Market</h2>
+        <p class="subtitle">Strategic choice between developer tools vs. low-code platform</p>
+        
+        <!-- Path Comparison -->
+        <div class="path-comparison">
+            <div class="path-card developer-path">
+                <div class="path-header">
+                    <div class="path-icon">👨‍💻</div>
+                    <h3>Path 1: Developer Tools</h3>
+                    <div class="path-subtitle">Following Cursor & Windsurf</div>
+                </div>
+                
+                <div class="path-content">
+                    <div class="pricing-model">
+                        <h4>💰 Pricing Model</h4>
+                        <div class="pricing-tiers">
+                            <div class="tier">
+                                <span class="tier-name">Individual</span>
+                                <span class="tier-price">$15/month</span>
+                            </div>
+                            <div class="tier">
+                                <span class="tier-name">Team</span>
+                                <span class="tier-price">$10/dev/month</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="market-size">
+                        <h4>🎯 Market Size</h4>
+                        <div class="market-stats">
+                            <div class="stat">
+                                <span class="stat-number">100K+</span>
+                                <span class="stat-label">Rails Developers</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">$2B</span>
+                                <span class="stat-label">Addressable Market</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">3-5%</span>
+                                <span class="stat-label">Market Penetration Goal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="go-to-market">
+                        <h4>🚀 Go-to-Market</h4>
+                        <div class="gtm-strategy">
+                            <div class="gtm-item">Rails community engagement</div>
+                            <div class="gtm-item">YC network outreach</div>
+                            <div class="gtm-item">Developer conferences</div>
+                            <div class="gtm-item">social networking platforms</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="path-pros-cons">
+                    <div class="pros">
+                        <h5>✅ Pros</h5>
+                        <ul>
+                            <li>Proven model (Cursor, Windsurf)</li>
+                            <li>Direct product-market fit</li>
+                            <li>High-value users (experienced devs)</li>
+                            <li>Strong retention potential</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h5>⚠️ Cons</h5>
+                        <ul>
+                            <li>Smaller addressable market</li>
+                            <li>Competitive landscape</li>
+                            <li>Longer sales cycles</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="path-card lowcode-path">
+                <div class="path-header">
+                    <div class="path-icon">🎨</div>
+                    <h3>Path 2: Low-Code Platform</h3>
+                    <div class="path-subtitle">Following Lovable for Backend</div>
+                </div>
+                
+                <div class="path-content">
+                    <div class="pricing-model">
+                        <h4>💰 Pricing Model</h4>
+                        <div class="pricing-tiers">
+                            <div class="tier">
+                                <span class="tier-name">Starter</span>
+                                <span class="tier-price">$10/month</span>
+                            </div>
+                            <div class="tier">
+                                <span class="tier-name">Business</span>
+                                <span class="tier-price">$99/month</span>
+                            </div>
+                            <div class="tier">
+                                <span class="tier-name">Enterprise</span>
+                                <span class="tier-price">$499/month</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="market-size">
+                        <h4>🎯 Market Size</h4>
+                        <div class="market-stats">
+                            <div class="stat">
+                                <span class="stat-number">50M+</span>
+                                <span class="stat-label">Business Users</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">$15B</span>
+                                <span class="stat-label">Low-Code Market</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">1-2%</span>
+                                <span class="stat-label">Market Penetration Goal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="go-to-market">
+                        <h4>🚀 Go-to-Market</h4>
+                        <div class="gtm-strategy">
+                            <div class="gtm-item">No-code community</div>
+                            <div class="gtm-item">Startup accelerators</div>
+                            <div class="gtm-item">Product Hunt launches</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="path-pros-cons">
+                    <div class="pros">
+                        <h5>✅ Pros</h5>
+                        <ul>
+                            <li>Massive addressable market</li>
+                            <li>Higher price points</li>
+                            <li>Viral growth potential</li>
+                            <li>Platform network effects</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h5>⚠️ Cons</h5>
+                        <ul>
+                            <li>Backend low-code is more challenging</li>
+                            <li>Complex UX requirements</li>
+                            <li>Longer development timeline</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Our Strategic Choice -->
+        <div class="strategic-choice">
+            <h3>🎯 Our Strategic Choice</h3>
+            <div class="choice-explanation">
+                <div class="choice-content">
+                    <h4>Start with Path 1, Evolve to Path 2</h4>
+                    <p>We're beginning with the developer tools market because:</p>
+                    <div class="reasoning">
+                        <div class="reason-item">
+                            <div class="reason-icon">🎯</div>
+                            <div class="reason-text">
+                                <strong>Proven demand:</strong> Rails developers are already using AI coding tools
+                            </div>
+                        </div>
+                        <div class="reason-item">
+                            <div class="reason-icon">🚀</div>
+                            <div class="reason-text">
+                                <strong>Faster validation:</strong> Direct feedback from experienced developers
+                            </div>
+                        </div>
+                        <div class="reason-item">
+                            <div class="reason-icon">💡</div>
+                            <div class="reason-text">
+                                <strong>Foundation for low-code:</strong> Deep Rails understanding enables simpler UX later
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="evolution-timeline">
+                    <h4>Evolution Timeline</h4>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">6 months</div>
+                            <div class="timeline-content">
+                                <strong>Developer Tools MVP</strong><br>
+                                Focus on Rails experts, prove technical approach
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">12 months</div>
+                            <div class="timeline-content">
+                                <strong>Platform Features</strong><br>
+                                Add visual builders, template library
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">18 months</div>
+                            <div class="timeline-content">
+                                <strong>Low-Code Platform</strong><br>
+                                Launch simplified interface for business users
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Revenue Projections -->
+        <!-- <div class="revenue-projections">
+            <h3>📈 Revenue Projections</h3>
+            <div class="projections-content">
+                <!-- <div class="projection-chart">
+                    <h4>3-Year Revenue Forecast</h4>
+                    <div class="chart-container">
+                        <div class="chart-bar">
+                            <div class="bar-group">
+                                <div class="bar developer-bar" style="height: 20%">
+                                    <span class="bar-label">$50K</span>
+                                </div>
+                                <div class="year-label">Year 1</div>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bar developer-bar" style="height: 60%">
+                                    <span class="bar-label">$500K</span>
+                                </div>
+                                <div class="year-label">Year 2</div>
+                            </div>
+                            <div class="bar-group">
+                                <div class="bar mixed-bar" style="height: 100%">
+                                    <div class="bar-section developer-section" style="height: 70%">
+                                        <span class="bar-label">$1.4M</span>
+                                    </div>
+                                    <div class="bar-section lowcode-section" style="height: 30%">
+                                        <span class="bar-label">$600K</span>
+                                    </div>
+                                </div>
+                                <div class="year-label">Year 3</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color developer-color"></div>
+                            <span>Developer Tools</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color lowcode-color"></div>
+                            <span>Low-Code Platform</span>
+                        </div>
+                    </div>
+                </div> -->
+                
+                <!-- <div class="key-metrics">
+                    <h4>Key Metrics</h4>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-label">Customer Acquisition Cost</div>
+                            <div class="metric-value">$250</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Monthly Churn Rate</div>
+                            <div class="metric-value">5%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Customer Lifetime Value</div>
+                            <div class="metric-value">$2,400</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Break-even Timeline</div>
+                            <div class="metric-value">18 months</div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div> -->
+    </div>
+</section>
+
+<style>
+    /* Business Model Section Styles */
+    .business-model {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        padding: 100px 50px;
+    }
+    
+    .path-comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin: 50px 0;
+    }
+    
+    .path-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .path-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #00ffff, #0080ff);
+    }
+    
+    .developer-path::before {
+        background: linear-gradient(90deg, #00ffff, #0080ff);
+    }
+    
+    .lowcode-path::before {
+        background: linear-gradient(90deg, #ff0080, #ff6600);
+    }
+    
+    .path-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .path-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+    
+    .path-subtitle {
+        color: #888;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    
+    .pricing-tiers {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+    
+    .tier {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+    }
+    
+    .tier-name {
+        font-weight: 500;
+    }
+    
+    .tier-price {
+        color: #00ffff;
+        font-weight: 600;
+    }
+    
+    .market-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+    
+    .stat {
+        text-align: center;
+    }
+    
+    .stat-number {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #00ffff;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #888;
+    }
+    
+    .gtm-strategy {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+    
+    .gtm-item {
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .path-pros-cons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .pros h5 {
+        color: #00ff80;
+        margin-bottom: 10px;
+    }
+    
+    .cons h5 {
+        color: #ff8000;
+        margin-bottom: 10px;
+    }
+    
+    .pros ul, .cons ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .pros li, .cons li {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+        padding-left: 15px;
+        position: relative;
+    }
+    
+    .pros li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #00ff80;
+    }
+    
+    .cons li::before {
+        content: '⚠';
+        position: absolute;
+        left: 0;
+        color: #ff8000;
+    }
+    
+    .strategic-choice {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 40px;
+        border-radius: 20px;
+        margin: 50px 0;
+        border: 1px solid rgba(0, 255, 255, 0.1);
+    }
+    
+    .choice-explanation {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+    
+    .reasoning {
+        margin-top: 20px;
+    }
+    
+    .reason-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .reason-icon {
+        font-size: 1.5rem;
+        margin-top: 5px;
+    }
+    
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .timeline-item {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    
+    .timeline-date {
+        background: #00ffff;
+        color: #000;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .timeline-content {
+        flex: 1;
+        font-size: 0.9rem;
+    }
+    
+    .revenue-projections {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 40px;
+        border-radius: 20px;
+        margin-top: 50px;
+    }
+    
+    .projections-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+    }
+    
+    .chart-container {
+        height: 300px;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        margin: 30px 0;
+    }
+    
+    .chart-bar {
+        display: flex;
+        align-items: end;
+        gap: 40px;
+        height: 100%;
+    }
+    
+    .bar-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .bar {
+        width: 60px;
+        min-height: 20px;
+        border-radius: 5px 5px 0 0;
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 5px;
+    }
+    
+    .developer-bar {
+        background: linear-gradient(180deg, #00ffff, #0080ff);
+    }
+    
+    .mixed-bar {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    
+    .bar-section {
+        width: 60px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 5px;
+    }
+    
+    .developer-section {
+        background: linear-gradient(180deg, #00ffff, #0080ff);
+        border-radius: 0 0 0 0;
+    }
+    
+    .lowcode-section {
+        background: linear-gradient(180deg, #ff0080, #ff6600);
+        border-radius: 5px 5px 0 0;
+    }
+    
+    .bar-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #000;
+    }
+    
+    .year-label {
+        font-size: 0.9rem;
+        color: #888;
+        font-weight: 500;
+    }
+    
+    .chart-legend {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+    }
+    
+    .developer-color {
+        background: linear-gradient(45deg, #00ffff, #0080ff);
+    }
+    
+    .lowcode-color {
+        background: linear-gradient(45deg, #ff0080, #ff6600);
+    }
+    
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .metric {
+        text-align: center;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    
+    .metric-label {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 5px;
+    }
+    
+    .metric-value {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #00ffff;
+    }
+    
+    @media (max-width: 1024px) {
+        .path-comparison {
+            grid-template-columns: 1fr;
+        }
+        
+        .choice-explanation {
+            grid-template-columns: 1fr;
+        }
+        
+        .projections-content {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .business-model {
+            padding: 60px 20px;
+        }
+        
+        .path-pros-cons {
+            grid-template-columns: 1fr;
+        }
+        
+        .metrics-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+
+
+
+    <script>
+        // Smooth scrolling navigation
+        const navDots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('.section');
+
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const targetSection = document.getElementById(dot.dataset.section);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Update active navigation dot on scroll
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY + 200;
+            
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    navDots.forEach(dot => dot.classList.remove('active'));
+                    navDots[index].classList.add('active');
+                }
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            const rate = scrolled * -0.5;
+            hero.style.transform = `translateY(${rate}px)`;
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe problem items and feature cards
+        document.querySelectorAll('.problem-item, .feature-card').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(50px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(item);
+        });
+    </script>
+</body>
 </html>
