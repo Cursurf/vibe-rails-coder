@@ -340,10 +340,9 @@
         <div class="nav-dot" data-section="opportunity" data-label="Opportunity"></div>
         <div class="nav-dot" data-section="problem" data-label="Problem"></div>
         <div class="nav-dot" data-section="solution" data-label="Solution"></div>
-        <div class="nav-dot" data-section="market" data-label="Market"></div>
+        <div class="nav-dot" data-section="why-rails" data-label="why-rails"></div>
         <div class="nav-dot" data-section="demo" data-label="demo"></div>
         <div class="nav-dot" data-section="architecture" data-label="architecture"></div>
-        <div class="nav-dot" data-section="why-rails" data-label="why-rails"></div>
         <div class="nav-dot" data-section="competition" data-label="competition"></div>
         <div class="nav-dot" data-section="business-model" data-label="business-model"></div>
         <div class="nav-dot" data-section="financial-projections" data-label="financial-projections"></div>
@@ -452,13 +451,12 @@
         </div>
     </section>
 
-    <!-- Market Section -->
-    <section class="section market" id="market">
-        <div class="container">
-            <h2>Why Start with Rails?</h2>
-            <p class="subtitle">The most successful startups are built on Rails</p>
-            
-            <div class="solution-features">
+    <!-- Why Rails Section -->
+<section class="section why-rails" id="why-rails">
+    <div class="container">
+        <h2>Why Start with Rails?</h2>
+        <p class="subtitle">The most successful startups are built on Rails</p>
+        <div class="solution-features">
                 <div class="feature-card">
                     <div class="feature-content">
                         <div class="feature-number">💎</div>
@@ -483,8 +481,216 @@
                     </div>
                 </div>
             </div>
+        <div class="rails-stats">
+            <div class="stat-card">
+                <div class="stat-number">$250B+</div>
+                <div class="stat-label">Combined valuation of Rails unicorns</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100K+</div>
+                <div class="stat-label">Active Rails developers globally</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">60%</div>
+                <div class="stat-label">Of YC unicorns use Rails</div>
+            </div>
         </div>
-    </section>
+
+        <div class="unicorn-showcase">
+            <h3>Rails Powers the Most Valuable Startups</h3>
+            <div class="unicorn-grid">
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🏠</div>
+                    <div class="unicorn-name">Airbnb</div>
+                    <div class="unicorn-value">$75B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">💳</div>
+                    <div class="unicorn-name">Stripe</div>
+                    <div class="unicorn-value">$95B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">₿</div>
+                    <div class="unicorn-name">Coinbase</div>
+                    <div class="unicorn-value">$8B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🛒</div>
+                    <div class="unicorn-name">Instacart</div>
+                    <div class="unicorn-value">$24B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🏦</div>
+                    <div class="unicorn-name">Chime</div>
+                    <div class="unicorn-value">$25B valuation</div>
+                </div>
+                <div class="unicorn-card">
+                    <div class="unicorn-logo">🎵</div>
+                    <div class="unicorn-name">Spotify</div>
+                    <div class="unicorn-value">$25B valuation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rails-advantages">
+            <div class="advantage-card">
+                <div class="advantage-icon">🎯</div>
+                <h4>Perfect Target Market</h4>
+                <p>Rails developers are early adopters who understand the value of productivity tools. They're willing to pay for solutions that save time and reduce complexity.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">🏗️</div>
+                <h4>Convention Over Configuration</h4>
+                <p>Rails' strong conventions make it perfect for AI understanding. Predictable patterns, established best practices, and consistent architecture enable deeper AI comprehension.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">🚀</div>
+                <h4>Strategic Expansion Path</h4>
+                <p>Master Rails first, then expand to Django, Laravel, and Node.js. Focus beats breadth—nail one ecosystem before moving to the next.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+  /* Why Rails Section */
+.why-rails {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.rails-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin: 3rem 0;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #00ffff;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #b0b0b0;
+}
+
+.unicorn-showcase {
+    margin: 4rem 0;
+}
+
+.unicorn-showcase h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.unicorn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+}
+
+.unicorn-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.unicorn-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffff, #ffffff);
+}
+
+.unicorn-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+}
+
+.unicorn-logo {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.unicorn-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.unicorn-value {
+    font-size: 1rem;
+    color: #00ffff;
+    font-weight: 500;
+}
+
+.rails-advantages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 4rem;
+}
+
+.advantage-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.15);
+}
+
+.advantage-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.advantage-card h4 {
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.advantage-card p {
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+</style>
 
 
     <!-- Product Demo Section -->
@@ -1140,225 +1346,6 @@
 }
 </style>
 
-
-
-
-<!-- Why Rails Section -->
-<section class="section why-rails" id="why-rails">
-    <div class="container">
-        <h2>Why Start with Rails?</h2>
-        <p class="subtitle">The most successful startups are built on Rails</p>
-        
-        <div class="rails-stats">
-            <div class="stat-card">
-                <div class="stat-number">$250B+</div>
-                <div class="stat-label">Combined valuation of Rails unicorns</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">100K+</div>
-                <div class="stat-label">Active Rails developers globally</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">60%</div>
-                <div class="stat-label">Of YC unicorns use Rails</div>
-            </div>
-        </div>
-
-        <div class="unicorn-showcase">
-            <h3>Rails Powers the Most Valuable Startups</h3>
-            <div class="unicorn-grid">
-                <div class="unicorn-card">
-                    <div class="unicorn-logo">🏠</div>
-                    <div class="unicorn-name">Airbnb</div>
-                    <div class="unicorn-value">$75B valuation</div>
-                </div>
-                <div class="unicorn-card">
-                    <div class="unicorn-logo">💳</div>
-                    <div class="unicorn-name">Stripe</div>
-                    <div class="unicorn-value">$95B valuation</div>
-                </div>
-                <div class="unicorn-card">
-                    <div class="unicorn-logo">₿</div>
-                    <div class="unicorn-name">Coinbase</div>
-                    <div class="unicorn-value">$8B valuation</div>
-                </div>
-                <div class="unicorn-card">
-                    <div class="unicorn-logo">🛒</div>
-                    <div class="unicorn-name">Instacart</div>
-                    <div class="unicorn-value">$24B valuation</div>
-                </div>
-                <div class="unicorn-card">
-                    <div class="unicorn-logo">🏦</div>
-                    <div class="unicorn-name">Chime</div>
-                    <div class="unicorn-value">$25B valuation</div>
-                </div>
-                <div class="unicorn-card">
-                    <div class="unicorn-logo">🎵</div>
-                    <div class="unicorn-name">Spotify</div>
-                    <div class="unicorn-value">$25B valuation</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="rails-advantages">
-            <div class="advantage-card">
-                <div class="advantage-icon">🎯</div>
-                <h4>Perfect Target Market</h4>
-                <p>Rails developers are early adopters who understand the value of productivity tools. They're willing to pay for solutions that save time and reduce complexity.</p>
-            </div>
-            
-            <div class="advantage-card">
-                <div class="advantage-icon">🏗️</div>
-                <h4>Convention Over Configuration</h4>
-                <p>Rails' strong conventions make it perfect for AI understanding. Predictable patterns, established best practices, and consistent architecture enable deeper AI comprehension.</p>
-            </div>
-            
-            <div class="advantage-card">
-                <div class="advantage-icon">🚀</div>
-                <h4>Strategic Expansion Path</h4>
-                <p>Master Rails first, then expand to Django, Laravel, and Node.js. Focus beats breadth—nail one ecosystem before moving to the next.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<style>
-  /* Why Rails Section */
-.why-rails {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-}
-
-.rails-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin: 3rem 0;
-}
-
-.stat-card {
-    text-align: center;
-    padding: 30px 20px;
-    background: rgba(0, 255, 255, 0.1);
-    border-radius: 15px;
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    transition: transform 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-}
-
-.stat-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #00ffff;
-    margin-bottom: 10px;
-}
-
-.stat-label {
-    font-size: 1rem;
-    color: #b0b0b0;
-}
-
-.unicorn-showcase {
-    margin: 4rem 0;
-}
-
-.unicorn-showcase h3 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #ffffff;
-}
-
-.unicorn-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 25px;
-}
-
-.unicorn-card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 25px;
-    border-radius: 15px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    text-align: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.unicorn-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #00ffff, #ffffff);
-}
-
-.unicorn-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
-}
-
-.unicorn-logo {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.unicorn-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 8px;
-}
-
-.unicorn-value {
-    font-size: 1rem;
-    color: #00ffff;
-    font-weight: 500;
-}
-
-.rails-advantages {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-    margin-top: 4rem;
-}
-
-.advantage-card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 35px;
-    border-radius: 20px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    transition: all 0.3s ease;
-}
-
-.advantage-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.15);
-}
-
-.advantage-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.advantage-card h4 {
-    font-size: 1.4rem;
-    color: #ffffff;
-    margin-bottom: 1rem;
-}
-
-.advantage-card p {
-    color: #b0b0b0;
-    line-height: 1.6;
-}
-
-</style>>
 
 
 
